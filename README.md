@@ -1,2 +1,2 @@
 # Campus-Reads
-Online Book Store Website 
+Online Book Store Website (Web Programming Project)
