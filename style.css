@@ -1,61 +1,237 @@
-body { 
-font-family: Arial; 
-background-color: #f2f2f2; 
-} 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+    line-height: 1.6;
+}
+
 .bg_image {
-position: fixed;
-top: 0;
-left: 0;
-width: 100%;
-height: 100%;
-background-image:url(https://wallpapers.com/images/high/library-filled-with-books-vyy56lqa9wji657j.webp);
-background-size: cover;
-background-repeat: no-repeat;
-background-positio: center;
-z-index: -1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                      url(https://wallpapers.com/images/high/library-filled-with-books-vyy56lqa9wji657j.webp);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1;
 }
-.container { 
-position: relative;
-z-index: 1;
-width: 90%; 
-margin: auto; 
-} 
-.header { 
-background-color: #BAB86C; 
-padding: 20px; 
-text-align: center; 
-} 
-.section { 
-background-color: #F5F5DC; 
-padding: 20px; 
-margin-top: 20px; 
-border: 2px solid #ccc;
-box-sizing: border-box;
-} 
-.section p::first-letter {
-font-size: 22px;
-font-wieght: bold;
-color: #6A6E09;
+
+.info-bar {
+    background-color: rgba(26, 26, 26, 0.9);
+    color: #ffffff;
+    padding: 10px 20px;
+    text-align: right;
+    font-size: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
+
+.container {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px 20px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header p {
+    font-size: 1.2em;
+    opacity: 0.95;
+}
+
+.section {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 30px;
+    margin-top: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.section h2 {
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid #667eea;
+    font-size: 1.8em;
+}
+
+.book-gallery {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.book-gallery img {
+    width: 150px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-gallery img:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 20px auto;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+tr:hover {
+    background-color: #f8f9fa;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+form {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: #333;
+}
+
+.inline-label {
+    display: inline;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.radio-group {
+    margin: 15px 0;
+}
+
+.radio-group p {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.radio-option {
+    margin: 8px 0;
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #667eea;
+}
+
+input[type="submit"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.media-container {
+    margin: 20px 0;
+}
+
+.media-container p {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+audio, video {
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 10px 0;
+}
+
+video {
+    max-width: 100%;
+}
+
+a {
+    color: #667eea;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
 a:hover {
-color: red;
-}
-input:focus {
-border: 2px solid #BAB86C;
-}
-buton:hover, input[type="submit"]:hover {
-background-color:  #6A6E09;
-cursor: pointer;
-}
-table { 
-border-collapse: collapse; 
-width: 80%; 
-} 
-th, td { 
-border: 1px solid black; 
-padding: 8px; 
-text-align: center; 
-} 
-th { 
-background-color: lightgray; 
+    color: #764ba2;
 }
