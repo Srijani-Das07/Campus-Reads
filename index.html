@@ -3,146 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Reads - Online Book Store</title>
+    <title>Campus Reads - Your Campus Book Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="bg_image"></div>
-    
-    <div class="info-bar">
-        Srijani Das | 24BCE1170 | Date: 07-01-2026
+
+<header class="topbar">
+    <div class="logo">CampusReads</div>
+    <nav>
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#books" class="nav-link">Book Catalog</a>
+        <a href="#price_list" class="nav-link">Price List</a>
+        <a href="#order" class="nav-link">Order</a>
+        <a href="#media" class="nav-link">Media</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <div class="hero-text">
+        <h1>Books that power<br>student life</h1>
+        <p>Academic. Fiction. Classics. All in one place.</p>
+        <a href="#books" class="btn-primary">Explore Collection</a>
     </div>
+</section>
 
-    <div class="container">
-        <div class="header">
-            <h1>Campus Reads</h1>
-            <p>Your Premier Online Book Store for Students</p>
+<section class="section" id="books">
+    <h2>Popular Picks</h2>
+    <div class="book-grid">
+        <div class="book-card">
+            <img src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1599648837i/55281145.jpg" alt="Let Us C">
+            <h3>Let Us C</h3>
+            <p class="price">₹350</p>
         </div>
-
-        <div class="section">
-            <h2>Popular Books</h2>
-            <div class="book-gallery">
-                <img src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1599648837i/55281145.jpg" alt="Let Us C">
-                <img src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1387151694i/17245.jpg" alt="Dracula">
-                <img src="https://m.media-amazon.com/images/I/81q77Q39nEL._AC_UF1000,1000_QL80_.jpg" alt="Harry Potter">
-                <img src="https://m.media-amazon.com/images/I/81tNnqcHxlL._AC_UF1000,1000_QL80_.jpg" alt="Sherlock Holmes">
-                <img src="https://m.media-amazon.com/images/I/81nChcVy7CL._AC_UF1000,1000_QL80_.jpg" alt="And Then There Were None">
-                <img src="https://khannabooks.com/wp-content/uploads/2023/10/9789382609919.jpg.webp" alt="Engineering Mathematics">
-            </div>
+        <div class="book-card">
+            <img src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1387151694i/17245.jpg" alt="Dracula">
+            <h3>Dracula</h3>
+            <p class="price">₹500</p>
         </div>
-
-        <div class="section">
-            <h2>Book Price List</h2>
-            <table>
-                <tr>
-                    <th>Book Title</th>
-                    <th>Category</th>
-                    <th>Price (₹)</th>
-                </tr>
-                <tr>
-                    <td>Let Us C</td>
-                    <td>Programming</td>
-                    <td>350</td>
-                </tr>
-                <tr>
-                    <td>Dracula</td>
-                    <td>Classic Horror</td>
-                    <td>500</td>
-                </tr>
-                <tr>
-                    <td>Harry Potter</td>
-                    <td>Fiction</td>
-                    <td>499</td>
-                </tr>
-                <tr>
-                    <td>Sherlock Holmes</td>
-                    <td>Detective</td>
-                    <td>650</td>
-                </tr>
-                <tr>
-                    <td>And Then There Were None</td>
-                    <td>Thriller</td>
-                    <td>549</td>
-                </tr>
-                <tr>
-                    <td>Engineering Mathematics</td>
-                    <td>Academic</td>
-                    <td>420</td>
-                </tr>
-            </table>
+        <div class="book-card">
+            <img src="https://m.media-amazon.com/images/I/81q77Q39nEL._AC_UF1000,1000_QL80_.jpg" alt="Harry Potter">
+            <h3>Harry Potter</h3>
+            <p class="price">₹499</p>
         </div>
-
-        <div class="section">
-            <h2>Order Book</h2>
-            <form>
-                <label for="name">Name:</label>
-                <input type="text" id="name" placeholder="Enter your full name">
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" placeholder="your.email@example.com">
-
-                <label for="book">Select Book:</label>
-                <select id="book">
-                    <option>Let Us C</option>
-                    <option>Dracula</option>
-                    <option>Harry Potter</option>
-                    <option>Sherlock Holmes</option>
-                    <option>And Then There Were None</option>
-                    <option>Engineering Mathematics</option>
-                </select>
-
-                <label for="qty">Quantity:</label>
-                <input type="number" id="qty" min="1" value="1">
-
-                <div class="radio-group">
-                    <p>Delivery Type:</p>
-                    <div class="radio-option">
-                        <input type="radio" id="standard" name="delivery">
-                        <label for="standard" class="inline-label">Standard Delivery</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="express" name="delivery">
-                        <label for="express" class="inline-label">Express Delivery</label>
-                    </div>
-                </div>
-
-                <div class="radio-group">
-                    <p>Payment Method:</p>
-                    <div class="radio-option">
-                        <input type="radio" id="cod" name="payment">
-                        <label for="cod" class="inline-label">Cash on Delivery</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="upi" name="payment">
-                        <label for="upi" class="inline-label">UPI</label>
-                    </div>
-                    <div class="radio-option">
-                        <input type="radio" id="card" name="payment">
-                        <label for="card" class="inline-label">Debit / Credit Card</label>
-                    </div>
-                </div>
-
-                <input type="submit" value="Place Order">
-            </form>
+        <div class="book-card">
+            <img src="https://m.media-amazon.com/images/I/81tNnqcHxlL._AC_UF1000,1000_QL80_.jpg" alt="Sherlock Holmes">
+            <h3>Sherlock Holmes</h3>
+            <p class="price">₹650</p>
         </div>
-
-        <div class="section">
-            <h2>Store Media</h2>
-            <div class="media-container">
-                <p>Background Music</p>
-                <audio controls autoplay>
-                    <source src="music.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-            <div class="media-container">
-                <p>Book Store Tour:</p>
-                <video width="100%" height="auto" controls>
-                    <source src="store.mp4" type="video/mp4">
-                    Your browser does not support the video element.
-                </video>
-            </div>
+        <div class="book-card">
+            <img src="https://m.media-amazon.com/images/I/81nChcVy7CL._AC_UF1000,1000_QL80_.jpg" alt="And Then There Were None">
+            <h3>And Then There Were None</h3>
+            <p class="price">₹549</p>
+        </div>
+        <div class="book-card">
+            <img src="https://khannabooks.com/wp-content/uploads/2023/10/9789382609919.jpg.webp" alt="Engineering Mathematics">
+            <h3>Engineering Mathematics</h3>
+            <p class="price">₹420</p>
         </div>
     </div>
+</section>
+
+<section class="section alt" id="price_list">
+    <h2>Price List</h2>
+    <div class="filter-section">
+        <label for="categoryFilter">Filter by Category:</label>
+        <select id="categoryFilter" onchange="filterBooks()">
+            <option value="all">All Categories</option>
+            <option value="Programming">Programming</option>
+            <option value="Classic">Classic</option>
+            <option value="Fiction">Fiction</option>
+            <option value="Detective">Detective</option>
+            <option value="Thriller">Thriller</option>
+            <option value="Academic">Academic</option>
+        </select>
+    </div>
+    <table id="priceTable">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price (₹)</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <tr data-category="Programming">
+                <td>Let Us C</td>
+                <td>Programming</td>
+                <td>350</td>
+            </tr>
+            <tr data-category="Classic">
+                <td>Dracula</td>
+                <td>Classic</td>
+                <td>500</td>
+            </tr>
+            <tr data-category="Fiction">
+                <td>Harry Potter</td>
+                <td>Fiction</td>
+                <td>499</td>
+            </tr>
+            <tr data-category="Detective">
+                <td>Sherlock Holmes</td>
+                <td>Detective</td>
+                <td>650</td>
+            </tr>
+            <tr data-category="Thriller">
+                <td>And Then There Were None</td>
+                <td>Thriller</td>
+                <td>549</td>
+            </tr>
+            <tr data-category="Academic">
+                <td>Engineering Mathematics</td>
+                <td>Academic</td>
+                <td>420</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section class="section" id="order">
+    <h2>Order Book</h2>
+
+    <form class="order-form" id="orderForm">
+        <input type="text" id="fullName" placeholder="Full Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+
+        <select id="bookSelect" required onchange="updatePrice()">
+            <option value="">Select Book</option>
+            <option value="350">Let Us C - ₹350</option>
+            <option value="500">Dracula - ₹500</option>
+            <option value="499">Harry Potter - ₹499</option>
+            <option value="650">Sherlock Holmes - ₹650</option>
+            <option value="549">And Then There Were None - ₹549</option>
+            <option value="420">Engineering Mathematics - ₹420</option>
+        </select>
+
+        <div class="quantity-section">
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" min="1" max="10" value="1" required onchange="updatePrice()">
+        </div>
+
+        <!-- Delivery Type -->
+        <div class="radio-group">
+            <p>Delivery Type</p>
+            <label><input type="radio" name="delivery" value="standard" required onchange="updatePrice()"> Standard Delivery (Free)</label>
+            <label><input type="radio" name="delivery" value="express" onchange="updatePrice()"> Express Delivery (+₹100)</label>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="radio-group">
+            <p>Payment Method</p>
+            <label><input type="radio" name="payment" value="cod" required> Cash on Delivery</label>
+            <label><input type="radio" name="payment" value="upi"> UPI</label>
+            <label><input type="radio" name="payment" value="card"> Debit / Credit Card</label>
+        </div>
+
+        <div class="total-section">
+            <h3>Total Amount: ₹<span id="totalAmount">0</span></h3>
+        </div>
+
+        <button type="submit">Place Order</button>
+    </form>
+
+    <div id="orderMessage" class="order-message"></div>
+</section>
+
+<section class="section alt" id="media">
+    <h2>Store Media</h2>
+    <div class="media-container">
+        <div class="media-item">
+            <h3>Store Ambience</h3>
+            <audio controls>
+                <source src="music.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        <div class="media-item">
+            <h3>Virtual Tour</h3>
+            <video controls>
+                <source src="store.mp4" type="video/mp4">
+                Your browser does not support the video element.
+            </video>
+        </div>
+    </div>
+</section>
+
+<footer class="footer">
+    <p>Srijani Das | 24BCE1170 | 07-01-2026</p>
+    <p>&copy; 2026 CampusReads. All rights reserved.</p>
+</footer>
+
+<script src="script.js"></script>
+
 </body>
 </html>
