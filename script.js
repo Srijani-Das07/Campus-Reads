@@ -1,303 +1,209 @@
-// ==========================================
-// VARIABLES - Book prices and delivery costs
-// ==========================================
+//BOOK DATABASE
 
-const bookPrices = {
-    "350": { name: "Let Us C", price: 350 },
-    "500": { name: "Dracula", price: 500 },
-    "499": { name: "Harry Potter", price: 499 },
-    "650": { name: "Sherlock Holmes", price: 650 },
-    "549": { name: "And Then There Were None", price: 549 },
-    "420": { name: "Engineering Mathematics", price: 420 }
+const books = [
+  { id: 1, title: "Let Us C", author: "Yashavant Kanetkar", category: "Programming", price: 350, stock: 15, image: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1599648837i/55281145.jpg" },
+  { id: 2, title: "Dracula", author: "Bram Stoker", category: "Classic", price: 500, stock: 8, image: "https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1387151694i/17245.jpg" },
+  { id: 3, title: "Harry Potter", author: "J.K. Rowling", category: "Fantasy", price: 499, stock: 12, image: "https://m.media-amazon.com/images/I/81q77Q39nEL._AC_UF1000,1000_QL80_.jpg" },
+  { id: 4, title: "Sherlock Holmes", author: "Arthur Conan Doyle", category: "Detective", price: 650, stock: 6, image: "https://m.media-amazon.com/images/I/81tNnqcHxlL._AC_UF1000,1000_QL80_.jpg" },
+  { id: 5, title: "And Then There Were None", author: "Agatha Christie", category: "Thriller", price: 549, stock: 10, image: "https://m.media-amazon.com/images/I/81nChcVy7CL._AC_UF1000,1000_QL80_.jpg" },
+  { id: 6, title: "Engineering Mathematics", author: "B.S. Grewal", category: "Academic", price: 420, stock: 20, image: "https://khannabooks.com/wp-content/uploads/2023/10/9789382609919.jpg.webp" },
+  { id: 7, title: "Data Structures in C", author: "Reema Thareja", category: "Programming", price: 445, stock: 14, image: "https://india.oup.com/covers/pop-up/9789354977190" },
+  { id: 8, title: "Hunger Games", author: "Suzanne Collins", category: "Fiction", price: 645, stock: 12, image: "https://m.media-amazon.com/images/I/61I24wOsn8L.jpg" },
+  { id: 9, title: "GATE Computer Science", author: "D.P. Nagpal", category: "Competitive", price: 850, stock: 0, image: "https://www.schandpublishing.com/Handler/ImageHandler.ashx?width=314&height=404&imgpath=~/Upload/BookImage/9788121932110.jpg" },
+  { id: 10, title: "The Magic Faraway Tree", author: "Enid Blyton", category: "Fantasy", price: 350, stock: 0, image: "https://m.media-amazon.com/images/I/71b2fzhsrgL._AC_UF1000,1000_QL80_.jpg" }
+];
+
+//GLOBAL STATE
+
+let cart = [];
+let filteredBooks = [...books];
+
+const deliveryCharges = { standard: 0, express: 100 };
+
+//DOM REFERENCES
+
+const bookGrid = document.getElementById("bookGrid");
+const tableBody = document.getElementById("tableBody");
+const bookSelect = document.getElementById("bookSelect");
+
+const cartSidebar = document.getElementById("cartSidebar");
+const cartItems = document.getElementById("cartItems");
+const cartCount = document.getElementById("cartCount");
+const cartTotal = document.getElementById("cartTotal");
+
+//INITIAL LOAD
+
+window.onload = () => {
+  renderBooks(books);
+  renderTable(books);
+  populateBookDropdown();
 };
 
-const deliveryCharges = {
-    standard: 0,
-    express: 100
-};
+//BOOK DISPLAY
 
-// ==========================================
-// NAVIGATION - Active link highlighting
-// ==========================================
-
-const sections = document.querySelectorAll("section");
-const navLinks = document.querySelectorAll(".nav-link");
-
-window.addEventListener("scroll", function() {
-    let current = "";
-
-    // LOOP: Check each section to find which one is currently in view
-    for (let i = 0; i < sections.length; i++) {
-        const section = sections[i];
-        const sectionTop = section.offsetTop - 120;
-        
-        // CONDITIONAL: Check if we've scrolled past this section
-        if (window.scrollY >= sectionTop) {
-            current = section.getAttribute("id");
-        }
-    }
-
-    // LOOP: Update active state for each nav link
-    for (let i = 0; i < navLinks.length; i++) {
-        const link = navLinks[i];
-        link.classList.remove("active");
-        
-        // CONDITIONAL: Add active class if this link matches current section
-        if (link.getAttribute("href") === "#" + current) {
-            link.classList.add("active");
-        }
-    }
-});
-
-// ==========================================
-// PRICE CALCULATION - Using variables and conditionals
-// ==========================================
-
-function updatePrice() {
-    // VARIABLES: Get form values
-    const bookSelect = document.getElementById("bookSelect");
-    const quantity = document.getElementById("quantity");
-    const deliveryOptions = document.getElementsByName("delivery");
-    const totalAmountElement = document.getElementById("totalAmount");
-    
-    // Get selected book price
-    const selectedBookPrice = parseInt(bookSelect.value);
-    const selectedQuantity = parseInt(quantity.value);
-    
-    // Initialize total
-    let total = 0;
-    
-    // CONDITIONAL: Check if a book is selected
-    if (selectedBookPrice > 0 && selectedQuantity > 0) {
-        total = selectedBookPrice * selectedQuantity;
-        
-        // LOOP: Check which delivery option is selected
-        for (let i = 0; i < deliveryOptions.length; i++) {
-            // CONDITIONAL: If this radio button is checked
-            if (deliveryOptions[i].checked) {
-                const deliveryType = deliveryOptions[i].value;
-                total = total + deliveryCharges[deliveryType];
-            }
-        }
-    }
-    
-    // Update the display
-    totalAmountElement.textContent = total;
+function renderBooks(list) {
+  bookGrid.innerHTML = list.length === 0
+    ? `<p style="grid-column:1/-1;text-align:center;padding:40px">No books found</p>`
+    : list.map(book => `
+      <div class="book-card">
+        <img src="${book.image}" alt="${book.title}">
+        <h3>${book.title}</h3>
+        <p>by ${book.author}</p>
+        <span>${book.category}</span>
+        <p class="price">₹${book.price}</p>
+        <p>${book.stock > 0 ? "✓ In Stock" : "❌ Out of Stock"}</p>
+        <button ${book.stock === 0 ? "disabled" : ""} onclick="addToCart(${book.id})">
+          ${book.stock > 0 ? "Add to Cart" : "Out of Stock"}
+        </button>
+      </div>
+    `).join("");
 }
 
-// ==========================================
-// FORM SUBMISSION - Validation using conditionals
-// ==========================================
+function renderTable(list) {
+  tableBody.innerHTML = list.map(book => `
+    <tr data-category="${book.category}">
+      <td>${book.title}</td>
+      <td>${book.author}</td>
+      <td>${book.category}</td>
+      <td>₹${book.price}</td>
+      <td>${book.stock > 0 ? "In Stock" : "Out of Stock"}</td>
+    </tr>
+  `).join("");
+}
 
-const orderForm = document.getElementById("orderForm");
-const orderMessage = document.getElementById("orderMessage");
-
-orderForm.addEventListener("submit", function(event) {
-    event.preventDefault(); // Prevent actual form submission
-    
-    // VARIABLES: Get all form values
-    const fullName = document.getElementById("fullName").value;
-    const email = document.getElementById("email").value;
-    const bookSelect = document.getElementById("bookSelect");
-    const quantity = document.getElementById("quantity").value;
-    const totalAmount = document.getElementById("totalAmount").textContent;
-    
-    // Get selected payment method
-    const paymentOptions = document.getElementsByName("payment");
-    let selectedPayment = "";
-    
-    // LOOP: Find which payment method was selected
-    for (let i = 0; i < paymentOptions.length; i++) {
-        // CONDITIONAL: Check if this option is selected
-        if (paymentOptions[i].checked) {
-            selectedPayment = paymentOptions[i].value;
-        }
-    }
-    
-    // Get selected delivery type
-    const deliveryOptions = document.getElementsByName("delivery");
-    let selectedDelivery = "";
-    
-    // LOOP: Find which delivery option was selected
-    for (let i = 0; i < deliveryOptions.length; i++) {
-        // CONDITIONAL: Check if this option is selected
-        if (deliveryOptions[i].checked) {
-            selectedDelivery = deliveryOptions[i].value;
-        }
-    }
-    
-    // CONDITIONAL: Validate that all required fields are filled
-    if (fullName === "" || email === "" || bookSelect.value === "") {
-        orderMessage.textContent = "Please fill in all required fields!";
-        orderMessage.className = "order-message show";
-        orderMessage.style.background = "#fee2e2";
-        orderMessage.style.color = "#991b1b";
-        orderMessage.style.border = "2px solid #dc2626";
-        return;
-    }
-    
-    // CONDITIONAL: Check if payment method is selected
-    if (selectedPayment === "") {
-        orderMessage.textContent = "Please select a payment method!";
-        orderMessage.className = "order-message show";
-        orderMessage.style.background = "#fee2e2";
-        orderMessage.style.color = "#991b1b";
-        orderMessage.style.border = "2px solid #dc2626";
-        return;
-    }
-    
-    // CONDITIONAL: Check if delivery type is selected
-    if (selectedDelivery === "") {
-        orderMessage.textContent = "Please select a delivery type!";
-        orderMessage.className = "order-message show";
-        orderMessage.style.background = "#fee2e2";
-        orderMessage.style.color = "#991b1b";
-        orderMessage.style.border = "2px solid #dc2626";
-        return;
-    }
-    
-    // Get selected book name
-    const selectedBookName = bookSelect.options[bookSelect.selectedIndex].text;
-    
-    // Display success message
-    let paymentText = "";
-    // CONDITIONAL: Convert payment code to readable text
-    if (selectedPayment === "cod") {
-        paymentText = "Cash on Delivery";
-    } else if (selectedPayment === "upi") {
-        paymentText = "UPI";
-    } else if (selectedPayment === "card") {
-        paymentText = "Debit/Credit Card";
-    }
-    
-    let deliveryText = "";
-    // CONDITIONAL: Convert delivery code to readable text
-    if (selectedDelivery === "standard") {
-        deliveryText = "Standard Delivery";
-    } else if (selectedDelivery === "express") {
-        deliveryText = "Express Delivery";
-    }
-    
-    orderMessage.innerHTML = `
-        <strong>✓ Order Placed Successfully!</strong><br>
-        <br>
-        Thank you, ${fullName}!<br>
-        Book: ${selectedBookName}<br>
-        Quantity: ${quantity}<br>
-        Total: ₹${totalAmount}<br>
-        Payment: ${paymentText}<br>
-        Delivery: ${deliveryText}<br>
-        <br>
-        Confirmation sent to ${email}
+function populateBookDropdown() {
+  books.filter(b => b.stock > 0).forEach(book => {
+    bookSelect.innerHTML += `
+      <option value="${book.id}">${book.title} - ₹${book.price}</option>
     `;
-    orderMessage.className = "order-message show success";
-    
-    // Reset form after 5 seconds
-    setTimeout(function() {
-        orderForm.reset();
-        orderMessage.classList.remove("show");
-        updatePrice();
-    }, 5000);
-});
+  });
+}
 
-// ==========================================
-// TABLE FILTER - Using loops and conditionals
-// ==========================================
+//SEARCH, FILTER, SORT
+
+function searchBooks() {
+  const q = searchInput.value.toLowerCase();
+  filteredBooks = books.filter(b =>
+    b.title.toLowerCase().includes(q) ||
+    b.author.toLowerCase().includes(q) ||
+    b.category.toLowerCase().includes(q)
+  );
+  renderBooks(filteredBooks);
+}
 
 function filterBooks() {
-    // VARIABLES: Get the selected category
-    const filterSelect = document.getElementById("categoryFilter");
-    const selectedCategory = filterSelect.value;
-    
-    // Get all table rows
-    const tableRows = document.querySelectorAll("#tableBody tr");
-    
-    // LOOP: Go through each row
-    for (let i = 0; i < tableRows.length; i++) {
-        const row = tableRows[i];
-        const rowCategory = row.getAttribute("data-category");
-        
-        // CONDITIONAL: Show or hide based on filter
-        if (selectedCategory === "all") {
-            // Show all rows
-            row.style.display = "";
-        } else if (rowCategory === selectedCategory) {
-            // Show matching rows
-            row.style.display = "";
-        } else {
-            // Hide non-matching rows
-            row.style.display = "none";
-        }
-    }
+  const cat = categoryFilter.value;
+  const price = priceFilter.value;
+
+  filteredBooks = books.filter(b => {
+    if (cat !== "all" && b.category !== cat) return false;
+    if (price === "0-300") return b.price < 300;
+    if (price === "300-500") return b.price >= 300 && b.price <= 500;
+    if (price === "500-800") return b.price > 500 && b.price <= 800;
+    if (price === "800+") return b.price > 800;
+    return true;
+  });
+
+  renderBooks(filteredBooks);
 }
 
-// ==========================================
-// BOOK STATISTICS - Using loops to calculate
-// ==========================================
-
-function calculateBookStats() {
-    // VARIABLES: Initialize counters
-    let totalBooks = 0;
-    let totalValue = 0;
-    let cheapestPrice = 9999;
-    let mostExpensivePrice = 0;
-    
-    const tableRows = document.querySelectorAll("#tableBody tr");
-    
-    // LOOP: Go through each book
-    for (let i = 0; i < tableRows.length; i++) {
-        const row = tableRows[i];
-        const priceCell = row.cells[2]; // Third column has the price
-        const price = parseInt(priceCell.textContent);
-        
-        totalBooks = totalBooks + 1;
-        totalValue = totalValue + price;
-        
-        // CONDITIONAL: Check if this is the cheapest book
-        if (price < cheapestPrice) {
-            cheapestPrice = price;
-        }
-        
-        // CONDITIONAL: Check if this is the most expensive book
-        if (price > mostExpensivePrice) {
-            mostExpensivePrice = price;
-        }
-    }
-    
-    // Calculate average
-    const averagePrice = totalValue / totalBooks;
-    
-    // You can use these stats - for now, just logging to console
-    console.log("=== Book Store Statistics ===");
-    console.log("Total Books:", totalBooks);
-    console.log("Total Catalog Value: ₹" + totalValue);
-    console.log("Average Price: ₹" + averagePrice.toFixed(2));
-    console.log("Cheapest Book: ₹" + cheapestPrice);
-    console.log("Most Expensive: ₹" + mostExpensivePrice);
+function sortBooks() {
+  const type = sortFilter.value;
+  const sorted = [...filteredBooks].sort((a, b) => {
+    if (type === "price-low") return a.price - b.price;
+    if (type === "price-high") return b.price - a.price;
+    if (type === "name-az") return a.title.localeCompare(b.title);
+    if (type === "name-za") return b.title.localeCompare(a.title);
+    return 0;
+  });
+  renderBooks(sorted);
 }
 
-// Calculate stats when page loads
-calculateBookStats();
-
-// ==========================================
-// DISCOUNT CALCULATOR - Practice with conditionals
-// ==========================================
-
-function calculateDiscount(total) {
-    let discount = 0;
-    
-    // CONDITIONAL: Apply discount based on total amount
-    if (total > 1000) {
-        discount = total * 0.15; // 15% discount
-    } else if (total > 500) {
-        discount = total * 0.10; // 10% discount
-    } else if (total > 300) {
-        discount = total * 0.05; // 5% discount
-    }
-    
-    return discount;
+function filterTable() {
+  const value = tableCategoryFilter.value;
+  document.querySelectorAll("#tableBody tr").forEach(row => {
+    row.style.display =
+      value === "all" || row.dataset.category === value ? "" : "none";
+  });
 }
 
-// You can uncomment this to test the discount function
-// console.log("Discount on ₹600:", calculateDiscount(600));
-// console.log("Discount on ₹1500:", calculateDiscount(1500));
+//CART FUNCTIONS
+
+function addToCart(id) {
+  const book = books.find(b => b.id === id);
+  const item = cart.find(i => i.id === id);
+
+  if (item) {
+    if (item.qty < book.stock) item.qty++;
+    else return alert("Stock limit reached");
+  } else {
+    cart.push({ id, title: book.title, price: book.price, qty: 1 });
+  }
+  updateCart();
+}
+
+function updateCart() {
+  cartCount.textContent = cart.reduce((s, i) => s + i.qty, 0);
+  cartTotal.textContent = cart.reduce((s, i) => s + i.qty * i.price, 0);
+
+  cartItems.innerHTML = cart.length === 0
+    ? "<p>Your cart is empty</p>"
+    : cart.map((i, idx) => `
+      <div class="cart-item">
+        <strong>${i.title}</strong><br>
+        ₹${i.price} × ${i.qty}
+        <div>
+          <button onclick="changeQty(${idx},1)">+</button>
+          <button onclick="changeQty(${idx},-1)">−</button>
+          <button onclick="removeItem(${idx})">Remove</button>
+        </div>
+      </div>
+    `).join("");
+}
+
+function changeQty(i, d) {
+  cart[i].qty += d;
+  if (cart[i].qty <= 0) cart.splice(i, 1);
+  updateCart();
+}
+
+function removeItem(i) {
+  cart.splice(i, 1);
+  updateCart();
+}
+
+function clearCart() {
+  cart = [];
+  updateCart();
+}
+
+function toggleCart() {
+  cartSidebar.classList.toggle("active");
+}
+
+function proceedToCheckout() {
+  if (cart.length === 0) return alert("Cart is empty!");
+  toggleCart();
+  document.getElementById("order").scrollIntoView({ behavior: "smooth" });
+}
+
+//ORDER PRICE CALCULATION
+
+function updateOrderPrice() {
+  const book = books.find(b => b.id == bookSelect.value);
+  if (!book) return;
+
+  const qty = +document.getElementById("quantity").value;
+  const delivery =
+    document.querySelector('input[name="delivery"]:checked')?.value || "standard";
+
+  const subtotal = book.price * qty;
+  const deliveryFee = deliveryCharges[delivery];
+
+  document.getElementById("bookPrice").textContent = book.price;
+  document.getElementById("summaryQuantity").textContent = qty;
+  document.getElementById("subtotal").textContent = subtotal;
+  document.getElementById("deliveryCharge").textContent = deliveryFee;
+  document.getElementById("totalAmount").textContent = subtotal + deliveryFee;
+}
+
