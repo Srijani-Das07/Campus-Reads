@@ -12,173 +12,310 @@
     <div class="logo">CampusReads</div>
     <nav>
         <a href="#home" class="nav-link">Home</a>
-        <a href="#books" class="nav-link">Book Catalog</a>
-        <a href="#price_list" class="nav-link">Price List</a>
+        <a href="#books" class="nav-link">Browse Books</a>
         <a href="#order" class="nav-link">Order</a>
-        <a href="#media" class="nav-link">Media</a>
+        <a href="#contact" class="nav-link">Contact</a>
+        <a href="#login" class="nav-link">Login</a>
     </nav>
+    <div class="cart-icon" onclick="toggleCart()">
+        🛒 Cart (<span id="cartCount">0</span>)
+    </div>
 </header>
 
+<!-- Shopping Cart Sidebar -->
+<div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+        <h2>Shopping Cart</h2>
+        <button class="close-cart" onclick="toggleCart()">×</button>
+    </div>
+    <div id="cartItems" class="cart-items">
+        <!-- Cart items will be added here dynamically -->
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <strong>Total: ₹<span id="cartTotal">0</span></strong>
+        </div>
+        <button class="btn-checkout" onclick="proceedToCheckout()">Proceed to Checkout</button>
+        <button class="btn-clear-cart" onclick="clearCart()">Clear Cart</button>
+    </div>
+</div>
+
+<!-- Main Content -->
 <section class="hero" id="home">
     <div class="hero-text">
         <h1>Books that power<br>student life</h1>
-        <p>Academic. Fiction. Classics. All in one place.</p>
+        <p>Academic. Fiction. Competitive. All in one place.</p>
         <a href="#books" class="btn-primary">Explore Collection</a>
     </div>
 </section>
 
-<section class="section" id="books">
-    <h2>Popular Picks</h2>
-    <div class="book-grid">
-        <div class="book-card">
-            <img src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1599648837i/55281145.jpg" alt="Let Us C">
-            <h3>Let Us C</h3>
-            <p class="price">₹350</p>
+<!-- Search and Filter Section -->
+<section class="section search-section" id="books">
+    <h2>Browse Our Collection</h2>
+    
+    <div class="search-filter-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search books by title, author, or category..." onkeyup="searchBooks()">
+            <button onclick="searchBooks()">🔍 Search</button>
         </div>
-        <div class="book-card">
-            <img src="https://m.media-amazon.com/images/S/compressed.photo.goodreads.com/books/1387151694i/17245.jpg" alt="Dracula">
-            <h3>Dracula</h3>
-            <p class="price">₹500</p>
+        
+        <div class="filter-controls">
+            <select id="categoryFilter" onchange="filterBooks()">
+                <option value="all">All Categories</option>
+                <option value="Academic">Academic</option>
+                <option value="Classic">Classic</option>
+                <option value="Competitive">Competitive Exams</option>
+                <option value="Detective">Detective</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Programming">Programming</option>
+                <option value="Thriller">Thriller</option>
+            </select>
+            
+            <select id="priceFilter" onchange="filterBooks()">
+                <option value="all">All Prices</option>
+                <option value="0-300">Under ₹300</option>
+                <option value="300-500">₹300 - ₹500</option>
+                <option value="500-800">₹500 - ₹800</option>
+                <option value="800+">Above ₹800</option>
+            </select>
+            
+            <select id="sortFilter" onchange="sortBooks()">
+                <option value="default">Sort By</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name-az">Name: A to Z</option>
+                <option value="name-za">Name: Z to A</option>
+            </select>
         </div>
-        <div class="book-card">
-            <img src="https://m.media-amazon.com/images/I/81q77Q39nEL._AC_UF1000,1000_QL80_.jpg" alt="Harry Potter">
-            <h3>Harry Potter</h3>
-            <p class="price">₹499</p>
-        </div>
-        <div class="book-card">
-            <img src="https://m.media-amazon.com/images/I/81tNnqcHxlL._AC_UF1000,1000_QL80_.jpg" alt="Sherlock Holmes">
-            <h3>Sherlock Holmes</h3>
-            <p class="price">₹650</p>
-        </div>
-        <div class="book-card">
-            <img src="https://m.media-amazon.com/images/I/81nChcVy7CL._AC_UF1000,1000_QL80_.jpg" alt="And Then There Were None">
-            <h3>And Then There Were None</h3>
-            <p class="price">₹549</p>
-        </div>
-        <div class="book-card">
-            <img src="https://khannabooks.com/wp-content/uploads/2023/10/9789382609919.jpg.webp" alt="Engineering Mathematics">
-            <h3>Engineering Mathematics</h3>
-            <p class="price">₹420</p>
-        </div>
+    </div>
+    
+    <div id="searchResults" class="search-results"></div>
+    
+    <div id="bookGrid" class="book-grid">
+        <!-- Books will be loaded here dynamically -->
     </div>
 </section>
 
+<!-- Detailed Book Listings with Prices -->
 <section class="section alt" id="price_list">
-    <h2>Price List</h2>
-    <div class="filter-section">
-        <label for="categoryFilter">Filter by Category:</label>
-        <select id="categoryFilter" onchange="filterBooks()">
+    <h2>Complete Price List</h2>
+    
+    <div class="table-controls">
+        <select id="tableCategoryFilter" onchange="filterTable()">
             <option value="all">All Categories</option>
-            <option value="Programming">Programming</option>
-            <option value="Classic">Classic</option>
-            <option value="Fiction">Fiction</option>
-            <option value="Detective">Detective</option>
-            <option value="Thriller">Thriller</option>
             <option value="Academic">Academic</option>
+            <option value="Classic">Classic</option>
+            <option value="Competitive">Competitive Exams</option>
+            <option value="Detective">Detective</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Fiction">Fiction</option>
+            <option value="Programming">Programming</option>
+            <option value="Thriller">Thriller</option>
         </select>
     </div>
+    
     <table id="priceTable">
         <thead>
             <tr>
                 <th>Title</th>
+                <th>Author</th>
                 <th>Category</th>
                 <th>Price (₹)</th>
+                <th>Availability</th>
             </tr>
         </thead>
         <tbody id="tableBody">
-            <tr data-category="Programming">
-                <td>Let Us C</td>
-                <td>Programming</td>
-                <td>350</td>
-            </tr>
-            <tr data-category="Classic">
-                <td>Dracula</td>
-                <td>Classic</td>
-                <td>500</td>
-            </tr>
-            <tr data-category="Fiction">
-                <td>Harry Potter</td>
-                <td>Fiction</td>
-                <td>499</td>
-            </tr>
-            <tr data-category="Detective">
-                <td>Sherlock Holmes</td>
-                <td>Detective</td>
-                <td>650</td>
-            </tr>
-            <tr data-category="Thriller">
-                <td>And Then There Were None</td>
-                <td>Thriller</td>
-                <td>549</td>
-            </tr>
-            <tr data-category="Academic">
-                <td>Engineering Mathematics</td>
-                <td>Academic</td>
-                <td>420</td>
-            </tr>
+            <!-- Table rows will be populated dynamically -->
         </tbody>
     </table>
 </section>
 
+<!-- Order Section -->
 <section class="section" id="order">
-    <h2>Order Book</h2>
+    <h2>Place Your Order</h2>
 
-    <form class="order-form" id="orderForm">
-        <input type="text" id="fullName" placeholder="Full Name" required>
-        <input type="email" id="email" placeholder="Email" required>
+    <div class="order-container">
+        <div class="order-form-wrapper">
+            <form class="order-form" id="orderForm">
+                <h3>Customer Details</h3>
+                
+                <input type="text" id="fullName" placeholder="Full Name *" required>
+                <input type="email" id="email" placeholder="Email *" required>
+                <input type="tel" id="phone" placeholder="Phone Number *" pattern="[0-9]{10}" required>
+                <textarea id="address" placeholder="Delivery Address *" rows="3" required></textarea>
 
-        <select id="bookSelect" required onchange="updatePrice()">
-            <option value="">Select Book</option>
-            <option value="350">Let Us C - ₹350</option>
-            <option value="500">Dracula - ₹500</option>
-            <option value="499">Harry Potter - ₹499</option>
-            <option value="650">Sherlock Holmes - ₹650</option>
-            <option value="549">And Then There Were None - ₹549</option>
-            <option value="420">Engineering Mathematics - ₹420</option>
-        </select>
+                <h3>Book Selection</h3>
+                
+                <select id="bookSelect" required onchange="updateOrderPrice()">
+                    <option value="">Select Book</option>
+                    <!-- Options will be populated dynamically -->
+                </select>
 
-        <div class="quantity-section">
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" min="1" max="10" value="1" required onchange="updatePrice()">
+                <div class="quantity-section">
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" min="1" max="10" value="1" required onchange="updateOrderPrice()">
+                </div>
+
+                <h3>Delivery Options</h3>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="delivery" value="standard" required onchange="updateOrderPrice()"> 
+                        Standard Delivery (5-7 days) - Free
+                    </label>
+                    <label>
+                        <input type="radio" name="delivery" value="express" onchange="updateOrderPrice()"> 
+                        Express Delivery (2-3 days) - ₹100
+                    </label>
+                </div>
+
+                <h3>Payment Method</h3>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="payment" value="cod" required> 
+                        Cash on Delivery
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="upi"> 
+                        UPI (PhonePe, GPay, Paytm)
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="card"> 
+                        Debit / Credit Card
+                    </label>
+                </div>
+
+                <div class="order-summary-box">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Book Price:</span>
+                        <span>₹<span id="bookPrice">0</span></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Quantity:</span>
+                        <span id="summaryQuantity">1</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>₹<span id="subtotal">0</span></span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Charges:</span>
+                        <span>₹<span id="deliveryCharge">0</span></span>
+                    </div>
+                    <div class="summary-row total-row">
+                        <span><strong>Total Amount:</strong></span>
+                        <span><strong>₹<span id="totalAmount">0</span></strong></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Confirm Order</button>
+            </form>
         </div>
-
-        <!-- Delivery Type -->
-        <div class="radio-group">
-            <p>Delivery Type</p>
-            <label><input type="radio" name="delivery" value="standard" required onchange="updatePrice()"> Standard Delivery (Free)</label>
-            <label><input type="radio" name="delivery" value="express" onchange="updatePrice()"> Express Delivery (+₹100)</label>
-        </div>
-
-        <!-- Payment Method -->
-        <div class="radio-group">
-            <p>Payment Method</p>
-            <label><input type="radio" name="payment" value="cod" required> Cash on Delivery</label>
-            <label><input type="radio" name="payment" value="upi"> UPI</label>
-            <label><input type="radio" name="payment" value="card"> Debit / Credit Card</label>
-        </div>
-
-        <div class="total-section">
-            <h3>Total Amount: ₹<span id="totalAmount">0</span></h3>
-        </div>
-
-        <button type="submit">Place Order</button>
-    </form>
+    </div>
 
     <div id="orderMessage" class="order-message"></div>
 </section>
 
+<!-- Contact Section -->
+<section class="section alt" id="contact">
+    <h2>Contact & Enquiry</h2>
+    
+    <div class="contact-container">
+        <div class="contact-info">
+            <h3>Get in Touch</h3>
+            <div class="info-item">
+                <strong>📧 Email:</strong>
+                <p>support@campusreads.com</p>
+            </div>
+            <div class="info-item">
+                <strong>📞 Phone:</strong>
+                <p>+91 9876543210</p>
+            </div>
+            <div class="info-item">
+                <strong>📍 Address:</strong>
+                <p>VIT Campus, Chennai<br>Tamil Nadu - 600127</p>
+            </div>
+            <div class="info-item">
+                <strong>🕐 Business Hours:</strong>
+                <p>Mon - Sat: 9:00 AM - 6:00 PM<br>Sunday: Closed</p>
+            </div>
+        </div>
+        
+        <div class="contact-form-wrapper">
+            <h3>Send us a Message</h3>
+            <form class="contact-form" id="contactForm">
+                <input type="text" id="contactName" placeholder="Your Name *" required>
+                <input type="email" id="contactEmail" placeholder="Your Email *" required>
+                <input type="text" id="contactSubject" placeholder="Subject *" required>
+                <textarea id="contactMessage" placeholder="Your Message *" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <div id="contactResponse" class="contact-response"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Login/Registration Section -->
+<section class="section" id="login">
+    <h2>User Account</h2>
+    
+    <div class="auth-container">
+        <div class="auth-tabs">
+            <button class="auth-tab active" onclick="showLogin()">Login</button>
+            <button class="auth-tab" onclick="showRegister()">Register</button>
+        </div>
+        
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-form">
+            <h3>Welcome Back!</h3>
+            <form id="loginFormElement">
+                <input type="email" id="loginEmail" placeholder="Email Address" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <div id="loginMessage" class="auth-message"></div>
+        </div>
+        
+        <!-- Registration Form -->
+        <div id="registerForm" class="auth-form" style="display: none;">
+            <h3>Create Account</h3>
+            <form id="registerFormElement">
+                <input type="text" id="regName" placeholder="Full Name" required>
+                <input type="email" id="regEmail" placeholder="Email Address" required>
+                <input type="tel" id="regPhone" placeholder="Phone Number" pattern="[0-9]{10}" required>
+                <input type="password" id="regPassword" placeholder="Password (min 6 characters)" minlength="6" required>
+                <input type="password" id="regConfirmPassword" placeholder="Confirm Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <div id="registerMessage" class="auth-message"></div>
+        </div>
+        
+        <!-- User Dashboard (shown after login) -->
+        <div id="userDashboard" class="user-dashboard" style="display: none;">
+            <h3>Welcome, <span id="userName"></span>!</h3>
+            <div class="dashboard-content">
+                <p>Email: <span id="userEmail"></span></p>
+                <p>Account created successfully!</p>
+                <button onclick="logout()" class="btn-logout">Logout</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Media Section -->
 <section class="section alt" id="media">
-    <h2>Store Media</h2>
+    <h2>Store Experience</h2>
     <div class="media-container">
         <div class="media-item">
-            <h3>Store Ambience</h3>
+            <h3>🎵 Store Ambience</h3>
             <audio controls>
                 <source src="music.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
         </div>
         <div class="media-item">
-            <h3>Virtual Tour</h3>
+            <h3>🎥 Virtual Tour</h3>
             <video controls>
                 <source src="store.mp4" type="video/mp4">
                 Your browser does not support the video element.
@@ -187,9 +324,33 @@
     </div>
 </section>
 
+<!-- Footer -->
 <footer class="footer">
-    <p>Srijani Das | 24BCE1170 | 07-01-2026</p>
-    <p>&copy; 2026 CampusReads. All rights reserved.</p>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <a href="#home">Home</a>
+            <a href="#books">Browse Books</a>
+            <a href="#order">Order</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-section">
+            <h4>Categories</h4>
+            <a href="#books">Academic</a>
+            <a href="#books">Fiction</a>
+            <a href="#books">Competitive Exams</a>
+            <a href="#books">Programming</a>
+        </div>
+        <div class="footer-section">
+            <h4>Connect</h4>
+            <p>📧 support@campusreads.com</p>
+            <p>📞 +91 9876543210</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>Srijani Das | 24BCE1170</p>
+        <p>&copy; 2026 CampusReads. All rights reserved.</p>
+    </div>
 </footer>
 
 <script src="script.js"></script>
