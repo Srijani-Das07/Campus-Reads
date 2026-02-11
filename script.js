@@ -31,6 +31,12 @@ const cartItems = document.getElementById("cartItems");
 const cartCount = document.getElementById("cartCount");
 const cartTotal = document.getElementById("cartTotal");
 
+const searchInput = document.getElementById("searchInput");
+const categoryFilter = document.getElementById("categoryFilter");
+const priceFilter = document.getElementById("priceFilter");
+const sortFilter = document.getElementById("sortFilter");
+const tableCategoryFilter = document.getElementById("tableCategoryFilter");
+
 //INITIAL LOAD
 
 window.onload = () => {
@@ -42,42 +48,66 @@ window.onload = () => {
 //BOOK DISPLAY
 
 function renderBooks(list) {
-  bookGrid.innerHTML = list.length === 0
-    ? `<p style="grid-column:1/-1;text-align:center;padding:40px">No books found</p>`
-    : list.map(book => `
-      <div class="book-card">
-        <img src="${book.image}" alt="${book.title}">
-        <h3>${book.title}</h3>
-        <p>by ${book.author}</p>
-        <span>${book.category}</span>
-        <p class="price">₹${book.price}</p>
-        <p>${book.stock > 0 ? "✓ In Stock" : "❌ Out of Stock"}</p>
-        <button ${book.stock === 0 ? "disabled" : ""} onclick="addToCart(${book.id})">
-          ${book.stock > 0 ? "Add to Cart" : "Out of Stock"}
-        </button>
-      </div>
-    `).join("");
+    // Clear the existing grid content
+    bookGrid.innerHTML = ""; 
+
+    if (list.length === 0) {
+        bookGrid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:40px">No books found</p>`;
+        return;
+    }
+
+    for (let i = 0; i < list.length; i++) {
+        let book = list[i]; 
+
+        let stockStatus = "";
+        let buttonHTML = "";
+
+        if (book.stock > 0) {
+            stockStatus = "<p class='availability in-stock'>✓ In Stock</p>";
+            buttonHTML = "<button class='btn-add-to-cart' onclick='addToCart(" + book.id + ")'>Add to Cart</button>";
+        } else {
+            stockStatus = "<p class='availability out-of-stock'>❌ Out of Stock</p>";
+            buttonHTML = "<button class='btn-add-to-cart' disabled>Out of Stock</button>";
+        }
+
+        bookGrid.innerHTML += 
+            "<div class='book-card'>" +
+                "<img src='" + book.image + "' alt='" + book.title + "'>" +
+                "<h3>" + book.title + "</h3>" +
+                "<p class='author'>by " + book.author + "</p>" +
+                "<span class='category'>" + book.category + "</span>" +
+                "<p class='price'>₹" + book.price + "</p>" +
+                stockStatus +
+                buttonHTML +
+            "</div>";
+    }
 }
 
 function renderTable(list) {
-  tableBody.innerHTML = list.map(book => `
-    <tr data-category="${book.category}">
-      <td>${book.title}</td>
-      <td>${book.author}</td>
-      <td>${book.category}</td>
-      <td>₹${book.price}</td>
-      <td>${book.stock > 0 ? "In Stock" : "Out of Stock"}</td>
-    </tr>
-  `).join("");
+    tableBody.innerHTML = "";
+
+    for (let j = 0; j < list.length; j++) {
+        let book = list[j];
+
+        let availabilityText = "";
+        if (book.stock > 0) {
+            availabilityText = "In Stock";
+        } else {
+            availabilityText = "Out of Stock";
+        }
+
+        let row = "<tr data-category='" + book.category + "'>" +
+                    "<td>" + book.title + "</td>" +
+                    "<td>" + book.author + "</td>" +
+                    "<td>" + book.category + "</td>" +
+                    "<td>₹" + book.price + "</td>" +
+                    "<td>" + availabilityText + "</td>" +
+                  "</tr>";
+
+        tableBody.innerHTML += row;
+    }
 }
 
-function populateBookDropdown() {
-  books.filter(b => b.stock > 0).forEach(book => {
-    bookSelect.innerHTML += `
-      <option value="${book.id}">${book.title} - ₹${book.price}</option>
-    `;
-  });
-}
 
 //SEARCH, FILTER, SORT
 
@@ -159,6 +189,24 @@ function updateCart() {
         </div>
       </div>
     `).join("");
+
+  renderOrderSummary();   
+}
+
+function renderOrderSummary() {
+    const summaryDiv = document.getElementById("orderItemsSummary");
+    
+    if (cart.length === 0) {
+        summaryDiv.innerHTML = `<p style="color:red;">No books selected. Add books from the collection above.</p>`;
+    } else {
+        summaryDiv.innerHTML = cart.map(item => `
+            <div class="summary-item-row" style="display:flex; justify-content:space-between; margin-bottom:5px; border-bottom:1px solid #eee; padding:5px 0;">
+                <span>${item.title} (x${item.qty})</span>
+                <span>₹${item.price * item.qty}</span>
+            </div>
+        `).join("");
+    }
+    updateOrderPrice(); 
 }
 
 function changeQty(i, d) {
@@ -190,20 +238,35 @@ function proceedToCheckout() {
 //ORDER PRICE CALCULATION
 
 function updateOrderPrice() {
-  const book = books.find(b => b.id == bookSelect.value);
-  if (!book) return;
+    const delivery = document.querySelector('input[name="delivery"]:checked')?.value || "standard";
+    
+    // Calculate total from cart array
+    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+    const deliveryFee = deliveryCharges[delivery];
 
-  const qty = +document.getElementById("quantity").value;
-  const delivery =
-    document.querySelector('input[name="delivery"]:checked')?.value || "standard";
-
-  const subtotal = book.price * qty;
-  const deliveryFee = deliveryCharges[delivery];
-
-  document.getElementById("bookPrice").textContent = book.price;
-  document.getElementById("summaryQuantity").textContent = qty;
-  document.getElementById("subtotal").textContent = subtotal;
-  document.getElementById("deliveryCharge").textContent = deliveryFee;
-  document.getElementById("totalAmount").textContent = subtotal + deliveryFee;
+    document.getElementById("summaryQuantity").textContent = totalQty;
+    document.getElementById("subtotal").textContent = subtotal;
+    document.getElementById("deliveryCharge").textContent = deliveryFee;
+    document.getElementById("totalAmount").textContent = subtotal + deliveryFee;
 }
 
+document.getElementById("orderForm").onsubmit = function(e) {
+    e.preventDefault();
+    if(cart.length === 0) {
+        alert("Please add at least one book to your cart before ordering.");
+        return;
+    }
+    
+    const orderDetails = {
+        customer: document.getElementById("fullName").value,
+        items: cart,
+        total: document.getElementById("totalAmount").textContent
+    };
+
+    console.log("Order Placed:", orderDetails);
+    alert(`Thank you, ${orderDetails.customer}! Your order for ${cart.length} different book types has been received.`);
+    
+    clearCart();
+    this.reset();
+};
