@@ -4,15 +4,15 @@ html {
 }
 
 :root {
-    --primary: #814BF6;
-    --primary-dark: #6a3dd4;
-    --bg: #F4F6FD;
-    --dark: #1e1e2f;
-    --muted: #6b6b80;
-    --success: #22c55e;
-    --danger: #ef4444;
-    --warning: #f59e0b;
-    --white: #ffffff;
+    --primary: #618B8E;        /* Dusty teal - mysterious, calm */
+    --primary-dark: #0D1A1C;   /* Deep forest black - depth */
+    --bg: #BCC4B8;            /* Sage green - natural, serene */
+    --dark: #2C1F2E;          /* Deep purple-brown - dramatic */
+    --muted: #4A5356;         /* Charcoal gray - moody */
+    --success: #618B8E;       /* Teal - tranquil */
+    --danger: #2C1F2E;        /* Deep plum - intense */
+    --warning: #4A5356;       /* Steel gray - atmospheric */
+    --white: #FFFFFF;         /* Pure white */
 }
 
 * {
