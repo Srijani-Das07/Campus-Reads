@@ -145,17 +145,10 @@
                 <input type="tel" id="phone" placeholder="Phone Number *" pattern="[0-9]{10}" required>
                 <textarea id="address" placeholder="Delivery Address *" rows="3" required></textarea>
 
-                <h3>Book Selection</h3>
-                
-                <select id="bookSelect" required onchange="updateOrderPrice()">
-                    <option value="">Select Book</option>
-                    <!-- Options will be populated dynamically -->
-                </select>
-
-                <div class="quantity-section">
-                    <label for="quantity">Quantity:</label>
-                    <input type="number" id="quantity" min="1" max="10" value="1" required onchange="updateOrderPrice()">
-                </div>
+                <h3>Order Items</h3>
+		<div id="orderItemsSummary" class="order-items-summary">
+    			<p style="color: #666;">Your cart is empty. Please add books to proceed.</p>
+		</div>
 
                 <h3>Delivery Options</h3>
                 <div class="radio-group">
@@ -299,27 +292,6 @@
                 <p>Account created successfully!</p>
                 <button onclick="logout()" class="btn-logout">Logout</button>
             </div>
-        </div>
-    </div>
-</section>
-
-<!-- Media Section -->
-<section class="section alt" id="media">
-    <h2>Store Experience</h2>
-    <div class="media-container">
-        <div class="media-item">
-            <h3>🎵 Store Ambience</h3>
-            <audio controls>
-                <source src="music.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-        </div>
-        <div class="media-item">
-            <h3>🎥 Virtual Tour</h3>
-            <video controls>
-                <source src="store.mp4" type="video/mp4">
-                Your browser does not support the video element.
-            </video>
         </div>
     </div>
 </section>
