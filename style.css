@@ -102,7 +102,7 @@ nav a:hover {
     height: 100vh;
     background: var(--white);
     box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-    z-index: 1000;
+    z-index: 10000;
     transition: right 0.3s ease;
     display: flex;
     flex-direction: column;
@@ -684,6 +684,104 @@ tbody tr:last-child td {
     border: 2px solid var(--danger);
 }
 
+/* ==================== BILL BREAKDOWN STYLES ==================== */
+.order-summary-box {
+    background: linear-gradient(145deg, #f8f9ff, #f0f4ff);
+    padding: 25px;
+    border-radius: 16px;
+    margin-bottom: 25px;
+    border: 1px solid rgba(97, 139, 142, 0.2);
+}
+
+.order-summary-box h3 {
+    color: var(--primary-dark);
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 10px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    font-size: 0.95em;
+    color: var(--dark);
+}
+
+.summary-row.total-row {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid var(--primary);
+    font-size: 1.2em;
+    color: var(--primary-dark);
+}
+
+.summary-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    margin: 15px 0;
+    opacity: 0.3;
+}
+
+.price-breakdown {
+    margin-bottom: 15px;
+}
+
+.breakdown-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px dashed rgba(97, 139, 142, 0.2);
+    font-size: 0.9em;
+}
+
+.breakdown-item:last-child {
+    border-bottom: none;
+}
+
+.breakdown-item .book-title {
+    color: var(--dark);
+    font-weight: 500;
+}
+
+.breakdown-item .book-quantity {
+    color: var(--muted);
+    font-size: 0.85em;
+    margin-left: 8px;
+}
+
+.breakdown-item .book-price {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.discount-row {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.savings-message {
+    background: linear-gradient(145deg, #d4edda, #c3e6cb);
+    color: #155724;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: 600;
+    border: 1px solid #c3e6cb;
+}
+
+#totalItemsCount {
+    font-weight: 700;
+    color: var(--primary);
+    background: rgba(97, 139, 142, 0.1);
+    padding: 2px 10px;
+    border-radius: 20px;
+}
+
 /* ==================== CONTACT SECTION ==================== */
 .contact-container {
     max-width: 1200px;
@@ -972,3 +1070,366 @@ tbody tr:last-child td {
         flex-direction: column;
     }
 }
+
+/* ==================== AUTH PAGE STYLES (INDEX.HTML) ==================== */
+.auth-page {
+    background: url('https://static.vecteezy.com/system/resources/thumbnails/027/052/561/small_2x/large-library-with-many-books-and-bookshelves-for-learning-with-knowledge-ai-generated-free-photo.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Optional: Remove blur from auth card for sharper look */
+.auth-box {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.5s ease;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    /* Remove backdrop-filter for sharper text */
+}
+
+.auth-footer {
+    text-align: center;
+    margin-top: 30px;
+    color: rgba(36, 32, 32, 0.616);
+    font-size: 0.85em;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.auth-wrapper {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.auth-brand {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.auth-logo {
+    font-size: 2.8em;
+    font-weight: 700;
+    color: rgba(36, 32, 32, 0.616);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+}
+
+.auth-tagline {
+    color: rgba(36, 32, 32, 0.616);
+    font-size: 1.1em;
+    font-weight: 400;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: none;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 10px;
+}
+
+.auth-tab.active {
+    background: var(--primary);
+    color: white;
+}
+
+.auth-form-container {
+    display: none;
+}
+
+.auth-form-container.active {
+    display: block;
+}
+
+.auth-form-container h2 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.8em;
+}
+
+.auth-subtitle {
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 0.95em;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: 500;
+    font-size: 0.9em;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(97, 139, 142, 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.forgot-password {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.auth-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(97, 139, 142, 0.2);
+}
+
+.auth-message {
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    display: none;
+}
+
+.auth-message.show {
+    display: block;
+}
+
+.auth-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.auth-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.auth-switch {
+    text-align: center;
+    color: #666;
+    font-size: 0.95em;
+    margin-top: 20px;
+}
+
+.auth-switch a {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+.terms {
+    margin-bottom: 25px;
+}
+
+.terms a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.terms a:hover {
+    text-decoration: underline;
+}
+
+
+/* ==================== MAIN PAGE STYLES (MAIN.HTML) ==================== */
+.user-banner {
+    background: linear-gradient(to right, var(--primary), var(--primary-dark));
+    color: white;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+}
+
+.user-banner-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logout-btn {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* ==================== MOBILE RESPONSIVE FOR AUTH ==================== */
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 30px 20px;
+    }
+    
+    .auth-logo {
+        font-size: 2.2em;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .user-banner-content {
+        padding: 0 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 25px 15px;
+    }
+    
+    .auth-logo {
+        font-size: 1.8em;
+    }
+    
+    .auth-tabs {
+        gap: 10px;
+    }
+    
+    .auth-tab {
+        padding: 10px;
+        font-size: 1em;
+    }
+}
+
+/* ==================== STICKY NAVIGATION ==================== */
+.main-page .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-page .user-banner {
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+}
+
+/* When both are sticky, stack them properly */
+.main-page .user-banner + .topbar {
+    top: 48px; 
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .main-page .user-banner + .topbar {
+        top: 44px; 
+    }
+}
+
