@@ -1,3 +1,38 @@
+// ==================== AUTHENTICATION & LOGOUT ====================
+
+// Check if user is logged in
+const currentUser = JSON.parse(localStorage.getItem('campusreads_current_user'));
+if (!currentUser) {
+    window.location.href = 'index.html';
+}
+
+// Logout function
+function logout() {
+    localStorage.removeItem('campusreads_current_user');
+    localStorage.removeItem('campusreads_cart'); // optional
+    window.location.href = 'index.html';
+}
+
+// Display user info
+window.addEventListener('DOMContentLoaded', function() {
+    const banner = document.getElementById('userBanner');
+    const bannerName = document.getElementById('bannerUserName');
+    
+    if (banner && bannerName && currentUser) {
+        bannerName.textContent = currentUser.name || currentUser.email;
+        banner.style.display = 'block';
+    }
+    
+    // Pre-fill order form
+    const nameField = document.getElementById('fullName');
+    const emailField = document.getElementById('email');
+    const phoneField = document.getElementById('phone');
+    
+    if (nameField) nameField.value = currentUser?.name || '';
+    if (emailField) emailField.value = currentUser?.email || '';
+    if (phoneField) phoneField.value = currentUser?.phone || '';
+});
+
 //BOOK DATABASE
 
 const books = [
@@ -237,18 +272,108 @@ function proceedToCheckout() {
 
 //ORDER PRICE CALCULATION
 
+// ==================== FULL BILL BREAKDOWN ====================
 function updateOrderPrice() {
     const delivery = document.querySelector('input[name="delivery"]:checked')?.value || "standard";
     
-    // Calculate total from cart array
+    // Calculate totals
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
     const deliveryFee = deliveryCharges[delivery];
+    
+    // Additional charges
+    const packagingFee = 0; // Free packaging
+    const gstRate = 0.05; // 5% GST
+    const gstAmount = Math.round(subtotal * gstRate);
+    
+    // Student discount (10% if subtotal > ₹1000)
+    let discountAmount = 0;
+    let discountRow = document.getElementById('discountRow');
+    let savingsMessage = document.getElementById('savingsMessage');
+    let savingsAmount = document.getElementById('savingsAmount');
+    
+    if (subtotal > 1000) {
+        discountAmount = Math.round(subtotal * 0.1); // 10% discount
+        discountRow.style.display = 'flex';
+        document.getElementById('discountAmount').textContent = discountAmount;
+        
+        // Show savings message
+        savingsMessage.style.display = 'block';
+        savingsAmount.textContent = discountAmount;
+    } else {
+        discountRow.style.display = 'none';
+        savingsMessage.style.display = 'none';
+    }
+    
+    // Grand total
+    const grandTotal = subtotal + deliveryFee + packagingFee + gstAmount - discountAmount;
+    
+    // Update summary
+    document.getElementById('totalItemsCount').textContent = totalQty;
+    document.getElementById('subtotal').textContent = subtotal;
+    document.getElementById('deliveryCharge').textContent = deliveryFee;
+    document.getElementById('packagingCharge').textContent = packagingFee;
+    document.getElementById('gstCharge').textContent = gstAmount;
+    document.getElementById('totalAmount').textContent = grandTotal;
+    
+    // Update order items summary with detailed breakdown
+    renderOrderSummary();
+    
+    // Update price breakdown by book
+    renderPriceBreakdown();
+}
 
-    document.getElementById("summaryQuantity").textContent = totalQty;
-    document.getElementById("subtotal").textContent = subtotal;
-    document.getElementById("deliveryCharge").textContent = deliveryFee;
-    document.getElementById("totalAmount").textContent = subtotal + deliveryFee;
+// ==================== PRICE BREAKDOWN BY BOOK ====================
+function renderPriceBreakdown() {
+    const breakdownDiv = document.getElementById('priceBreakdown');
+    
+    if (cart.length === 0) {
+        breakdownDiv.innerHTML = '<p style="color: #666; text-align: center; padding: 10px;">No items in cart</p>';
+        return;
+    }
+    
+    let html = '';
+    cart.forEach(item => {
+        html += `
+            <div class="breakdown-item">
+                <span>
+                    <span class="book-title">${item.title}</span>
+                    <span class="book-quantity">x${item.qty}</span>
+                </span>
+                <span class="book-price">₹${item.price * item.qty}</span>
+            </div>
+        `;
+    });
+    
+    breakdownDiv.innerHTML = html;
+}
+
+// Update renderOrderSummary function to show better formatting
+function renderOrderSummary() {
+    const summaryDiv = document.getElementById("orderItemsSummary");
+    
+    if (cart.length === 0) {
+        summaryDiv.innerHTML = `<p style="color: #666; text-align: center; padding: 15px;">🛒 Your cart is empty. Add books from the collection above.</p>`;
+    } else {
+        summaryDiv.innerHTML = cart.map(item => `
+            <div class="summary-item-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 8px 0; border-bottom: 1px solid #eee;">
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-weight: 600; color: var(--dark);">${item.title}</span>
+                    <span style="font-size: 0.85em; color: var(--muted);">Qty: ${item.qty} × ₹${item.price}</span>
+                </div>
+                <span style="font-weight: 700; color: var(--primary);">₹${item.price * item.qty}</span>
+            </div>
+        `).join('');
+        
+        // Add subtotal line at bottom
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        summaryDiv.innerHTML += `
+            <div style="display: flex; justify-content: space-between; margin-top: 15px; padding-top: 10px; border-top: 2px solid var(--primary); font-weight: 700;">
+                <span>Subtotal:</span>
+                <span style="color: var(--primary);">₹${subtotal}</span>
+            </div>
+        `;
+    }
 }
 
 document.getElementById("orderForm").onsubmit = function(e) {
