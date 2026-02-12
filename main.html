@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Reads - Your Campus Book Store</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="main-page">
+
+<!-- Logged-in User Banner -->
+<div id="userBanner" class="user-banner" style="display: none;">
+    <div class="user-banner-content">
+        <span>Welcome back, <strong id="bannerUserName"></strong>!</span>
+        <button onclick="logout()" class="logout-btn">Logout</button>
+    </div>
+</div>
+
+<header class="topbar">
+    <div class="logo">CampusReads</div>
+    <nav>
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#books" class="nav-link">Browse Books</a>
+        <a href="#order" class="nav-link">Order</a>
+        <a href="#contact" class="nav-link">Contact</a>
+    </nav>
+    <div class="cart-icon" onclick="toggleCart()">
+        🛒 Cart (<span id="cartCount">0</span>)
+    </div>
+</header>
+
+<!-- Shopping Cart Sidebar -->
+<div id="cartSidebar" class="cart-sidebar">
+    <div class="cart-header">
+        <h2>Shopping Cart</h2>
+        <button class="close-cart" onclick="toggleCart()">×</button>
+    </div>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <strong>Total: ₹<span id="cartTotal">0</span></strong>
+        </div>
+        <button class="btn-checkout" onclick="proceedToCheckout()">Proceed to Checkout</button>
+        <button class="btn-clear-cart" onclick="clearCart()">Clear Cart</button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<section class="hero" id="home">
+    <div class="hero-text">
+        <h1>Books that power<br>student life</h1>
+        <p>Academic. Fiction. Competitive. All in one place.</p>
+        <a href="#books" class="btn-primary">Explore Collection</a>
+    </div>
+</section>
+
+<!-- Search and Filter Section -->
+<section class="section search-section" id="books">
+    <h2>Browse Our Collection</h2>
+    
+    <div class="search-filter-container">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search books by title, author, or category..." onkeyup="searchBooks()">
+            <button onclick="searchBooks()">🔍 Search</button>
+        </div>
+        
+        <div class="filter-controls">
+            <select id="categoryFilter" onchange="filterBooks()">
+                <option value="all">All Categories</option>
+                <option value="Academic">Academic</option>
+                <option value="Classic">Classic</option>
+                <option value="Competitive">Competitive Exams</option>
+                <option value="Detective">Detective</option>
+                <option value="Fantasy">Fantasy</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Programming">Programming</option>
+                <option value="Thriller">Thriller</option>
+            </select>
+            
+            <select id="priceFilter" onchange="filterBooks()">
+                <option value="all">All Prices</option>
+                <option value="0-300">Under ₹300</option>
+                <option value="300-500">₹300 - ₹500</option>
+                <option value="500-800">₹500 - ₹800</option>
+                <option value="800+">Above ₹800</option>
+            </select>
+            
+            <select id="sortFilter" onchange="sortBooks()">
+                <option value="default">Sort By</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name-az">Name: A to Z</option>
+                <option value="name-za">Name: Z to A</option>
+            </select>
+        </div>
+    </div>
+    
+    <div id="searchResults" class="search-results"></div>
+    
+    <div id="bookGrid" class="book-grid"></div>
+</section>
+
+<!-- Detailed Book Listings with Prices -->
+<section class="section alt" id="price_list">
+    <h2>Complete Price List</h2>
+    
+    <div class="table-controls">
+        <select id="tableCategoryFilter" onchange="filterTable()">
+            <option value="all">All Categories</option>
+            <option value="Academic">Academic</option>
+            <option value="Classic">Classic</option>
+            <option value="Competitive">Competitive Exams</option>
+            <option value="Detective">Detective</option>
+            <option value="Fantasy">Fantasy</option>
+            <option value="Fiction">Fiction</option>
+            <option value="Programming">Programming</option>
+            <option value="Thriller">Thriller</option>
+        </select>
+    </div>
+    
+    <div class="table-container">
+        <table id="priceTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Price (₹)</th>
+                    <th>Availability</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Order Section -->
+<section class="section" id="order">
+    <h2>Place Your Order</h2>
+
+    <div class="order-container">
+        <div class="order-form-wrapper">
+            <form class="order-form" id="orderForm">
+                <h3>Customer Details</h3>
+                
+                <input type="text" id="fullName" placeholder="Full Name *" required>
+                <input type="email" id="email" placeholder="Email *" required>
+                <input type="tel" id="phone" placeholder="Phone Number *" pattern="[0-9]{10}" required>
+                <textarea id="address" placeholder="Delivery Address *" rows="3" required></textarea>
+
+                <h3>Order Items</h3>
+                <div id="orderItemsSummary" class="order-items-summary">
+                    <p style="color: #666;">Your cart is empty. Please add books to proceed.</p>
+                </div>
+
+                <h3>Delivery Options</h3>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="delivery" value="standard" required onchange="updateOrderPrice()"> 
+                        Standard Delivery (5-7 days) - Free
+                    </label>
+                    <label>
+                        <input type="radio" name="delivery" value="express" onchange="updateOrderPrice()"> 
+                        Express Delivery (2-3 days) - ₹100
+                    </label>
+                </div>
+
+                <h3>Payment Method</h3>
+                <div class="radio-group">
+                    <label>
+                        <input type="radio" name="payment" value="cod" required> 
+                        Cash on Delivery
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="upi"> 
+                        UPI (PhonePe, GPay, Paytm)
+                    </label>
+                    <label>
+                        <input type="radio" name="payment" value="card"> 
+                        Debit / Credit Card
+                    </label>
+                </div>
+
+                <!-- FULL BILL BREAKDOWN -->
+                <div class="order-summary-box">
+                    <h3>Bill Breakdown</h3>
+                    
+                    <!-- Item Count -->
+                    <div class="summary-row">
+                        <span>Total Items:</span>
+                        <span id="totalItemsCount">0</span>
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div class="summary-divider"></div>
+                    
+                    <!-- Price Breakdown by Category (will be populated dynamically) -->
+                    <div id="priceBreakdown" class="price-breakdown">
+                        <!-- Books will be listed here with quantities -->
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div class="summary-divider"></div>
+                    
+                    <!-- Subtotal -->
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span>₹<span id="subtotal">0</span></span>
+                    </div>
+                    
+                    <!-- Delivery Charges -->
+                    <div class="summary-row">
+                        <span>Delivery Charges:</span>
+                        <span>₹<span id="deliveryCharge">0</span></span>
+                    </div>
+                    
+                    <!-- Packaging Charges (Free for now) -->
+                    <div class="summary-row">
+                        <span>Packaging Charges:</span>
+                        <span>₹<span id="packagingCharge">0</span></span>
+                    </div>
+                    
+                    <!-- GST (5% on subtotal) -->
+                    <div class="summary-row">
+                        <span>GST (5%):</span>
+                        <span>₹<span id="gstCharge">0</span></span>
+                    </div>
+                    
+                    <!-- Discount (if any) -->
+                    <div class="summary-row discount-row" id="discountRow" style="display: none;">
+                        <span>Student Discount:</span>
+                        <span>- ₹<span id="discountAmount">0</span></span>
+                    </div>
+                    
+                    <!-- Grand Total -->
+                    <div class="summary-row total-row">
+                        <span><strong>Grand Total:</strong></span>
+                        <span><strong>₹<span id="totalAmount">0</span></strong></span>
+                    </div>
+                    
+                    <!-- Savings Message -->
+                    <div id="savingsMessage" class="savings-message" style="display: none;">
+                        🎓 You saved ₹<span id="savingsAmount">0</span> with student discount!
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Confirm Order</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="orderMessage" class="order-message"></div>
+</section>
+
+<!-- Contact Section -->
+<section class="section alt" id="contact">
+    <h2>Contact & Enquiry</h2>
+    
+    <div class="contact-container">
+        <div class="contact-info">
+            <h3>Get in Touch</h3>
+            <div class="info-item">
+                <strong>📧 Email:</strong>
+                <p>support@campusreads.com</p>
+            </div>
+            <div class="info-item">
+                <strong>📞 Phone:</strong>
+                <p>+91 9876543210</p>
+            </div>
+            <div class="info-item">
+                <strong>📍 Address:</strong>
+                <p>VIT Campus, Chennai<br>Tamil Nadu - 600127</p>
+            </div>
+            <div class="info-item">
+                <strong>🕐 Business Hours:</strong>
+                <p>Mon - Sat: 9:00 AM - 6:00 PM<br>Sunday: Closed</p>
+            </div>
+        </div>
+        
+        <div class="contact-form-wrapper">
+            <h3>Send us a Message</h3>
+            <form class="contact-form" id="contactForm" onsubmit="handleContact(event)">
+                <input type="text" id="contactName" placeholder="Your Name *" required>
+                <input type="email" id="contactEmail" placeholder="Your Email *" required>
+                <input type="text" id="contactSubject" placeholder="Subject *" required>
+                <textarea id="contactMessage" placeholder="Your Message *" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+            <div id="contactResponse" class="contact-response"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>Quick Links</h4>
+            <a href="#home">Home</a>
+            <a href="#books">Browse Books</a>
+            <a href="#order">Order</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="footer-section">
+            <h4>Categories</h4>
+            <a href="#books">Academic</a>
+            <a href="#books">Fiction</a>
+            <a href="#books">Competitive Exams</a>
+            <a href="#books">Programming</a>
+        </div>
+        <div class="footer-section">
+            <h4>Connect</h4>
+            <p>📧 support@campusreads.com</p>
+            <p>📞 +91 9876543210</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>Srijani Das | 24BCE1170</p>
+        <p>&copy; 2026 CampusReads. All rights reserved.</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
