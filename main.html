@@ -12,7 +12,10 @@
 <div id="userBanner" class="user-banner" style="display: none;">
     <div class="user-banner-content">
         <span>Welcome back, <strong id="bannerUserName"></strong>!</span>
-        <button onclick="logout()" class="logout-btn">Logout</button>
+        <div class="banner-right">
+            <button onclick="showOrderHistory()" class="btn-my-orders">My Orders</button>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
     </div>
 </div>
 
@@ -140,7 +143,7 @@
 
     <div class="order-container">
         <div class="order-form-wrapper">
-            <form class="order-form" id="orderForm">
+            <form class="order-form" id="orderForm" onsubmit="handleOrderSubmit(event)">
                 <h3>Customer Details</h3>
                 
                 <input type="text" id="fullName" placeholder="Full Name *" required>
@@ -185,60 +188,47 @@
                 <div class="order-summary-box">
                     <h3>Bill Breakdown</h3>
                     
-                    <!-- Item Count -->
                     <div class="summary-row">
                         <span>Total Items:</span>
                         <span id="totalItemsCount">0</span>
                     </div>
                     
-                    <!-- Divider -->
                     <div class="summary-divider"></div>
                     
-                    <!-- Price Breakdown by Category (will be populated dynamically) -->
-                    <div id="priceBreakdown" class="price-breakdown">
-                        <!-- Books will be listed here with quantities -->
-                    </div>
+                    <div id="priceBreakdown" class="price-breakdown"></div>
                     
-                    <!-- Divider -->
                     <div class="summary-divider"></div>
                     
-                    <!-- Subtotal -->
                     <div class="summary-row">
                         <span>Subtotal:</span>
                         <span>₹<span id="subtotal">0</span></span>
                     </div>
                     
-                    <!-- Delivery Charges -->
                     <div class="summary-row">
                         <span>Delivery Charges:</span>
                         <span>₹<span id="deliveryCharge">0</span></span>
                     </div>
                     
-                    <!-- Packaging Charges (Free for now) -->
                     <div class="summary-row">
                         <span>Packaging Charges:</span>
                         <span>₹<span id="packagingCharge">0</span></span>
                     </div>
                     
-                    <!-- GST (5% on subtotal) -->
                     <div class="summary-row">
                         <span>GST (5%):</span>
                         <span>₹<span id="gstCharge">0</span></span>
                     </div>
                     
-                    <!-- Discount (if any) -->
                     <div class="summary-row discount-row" id="discountRow" style="display: none;">
                         <span>Student Discount:</span>
                         <span>- ₹<span id="discountAmount">0</span></span>
                     </div>
                     
-                    <!-- Grand Total -->
                     <div class="summary-row total-row">
                         <span><strong>Grand Total:</strong></span>
                         <span><strong>₹<span id="totalAmount">0</span></strong></span>
                     </div>
                     
-                    <!-- Savings Message -->
                     <div id="savingsMessage" class="savings-message" style="display: none;">
                         🎓 You saved ₹<span id="savingsAmount">0</span> with student discount!
                     </div>
@@ -313,6 +303,179 @@
     </div>
 </footer>
 
+<!-- ===================== PAYMENT MODAL ===================== -->
+<div id="paymentModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+        <button class="modal-close" onclick="closePaymentModal()">×</button>
+
+        <!-- UPI Screen -->
+        <div id="upiScreen" class="payment-screen" style="display:none;">
+            <h2 class="modal-title">Pay via UPI</h2>
+            <p class="modal-subtitle">Scan the QR code or use UPI ID below</p>
+            <div class="modal-amount">₹<span id="upiAmount">0</span></div>
+
+            <div class="qr-wrapper">
+                <svg width="180" height="180" viewBox="0 0 180 180" class="qr-svg">
+                    <rect width="180" height="180" fill="white" rx="6"/>
+                    <!-- Position markers -->
+                    <rect x="10" y="10" width="50" height="50" fill="none" stroke="#2C1F2E" stroke-width="4" rx="3"/>
+                    <rect x="17" y="17" width="36" height="36" fill="#2C1F2E" rx="2"/>
+                    <rect x="120" y="10" width="50" height="50" fill="none" stroke="#2C1F2E" stroke-width="4" rx="3"/>
+                    <rect x="127" y="17" width="36" height="36" fill="#2C1F2E" rx="2"/>
+                    <rect x="10" y="120" width="50" height="50" fill="none" stroke="#2C1F2E" stroke-width="4" rx="3"/>
+                    <rect x="17" y="127" width="36" height="36" fill="#2C1F2E" rx="2"/>
+                    <!-- Data modules -->
+                    <g fill="#2C1F2E">
+                        <rect x="70" y="10" width="8" height="8"/><rect x="82" y="10" width="8" height="8"/>
+                        <rect x="94" y="10" width="8" height="8"/><rect x="70" y="22" width="8" height="8"/>
+                        <rect x="94" y="22" width="8" height="8"/><rect x="70" y="34" width="8" height="8"/>
+                        <rect x="82" y="34" width="8" height="8"/><rect x="94" y="34" width="8" height="8"/>
+                        <rect x="10" y="70" width="8" height="8"/><rect x="22" y="70" width="8" height="8"/>
+                        <rect x="34" y="70" width="8" height="8"/><rect x="10" y="82" width="8" height="8"/>
+                        <rect x="34" y="82" width="8" height="8"/><rect x="10" y="94" width="8" height="8"/>
+                        <rect x="22" y="94" width="8" height="8"/><rect x="34" y="94" width="8" height="8"/>
+                        <rect x="70" y="70" width="8" height="8"/><rect x="94" y="70" width="8" height="8"/>
+                        <rect x="82" y="82" width="8" height="8"/><rect x="70" y="94" width="8" height="8"/>
+                        <rect x="94" y="94" width="8" height="8"/>
+                        <rect x="120" y="70" width="8" height="8"/><rect x="132" y="70" width="8" height="8"/>
+                        <rect x="144" y="70" width="8" height="8"/><rect x="156" y="70" width="8" height="8"/>
+                        <rect x="120" y="82" width="8" height="8"/><rect x="144" y="82" width="8" height="8"/>
+                        <rect x="132" y="94" width="8" height="8"/><rect x="156" y="94" width="8" height="8"/>
+                        <rect x="70" y="120" width="8" height="8"/><rect x="82" y="120" width="8" height="8"/>
+                        <rect x="70" y="132" width="8" height="8"/><rect x="94" y="132" width="8" height="8"/>
+                        <rect x="82" y="144" width="8" height="8"/><rect x="70" y="156" width="8" height="8"/>
+                        <rect x="94" y="156" width="8" height="8"/>
+                        <rect x="120" y="120" width="8" height="8"/><rect x="144" y="120" width="8" height="8"/>
+                        <rect x="156" y="120" width="8" height="8"/><rect x="132" y="132" width="8" height="8"/>
+                        <rect x="120" y="144" width="8" height="8"/><rect x="156" y="144" width="8" height="8"/>
+                        <rect x="120" y="156" width="8" height="8"/><rect x="132" y="156" width="8" height="8"/>
+                        <rect x="144" y="156" width="8" height="8"/>
+                    </g>
+                </svg>
+                <p class="qr-label">CampusReads@upi</p>
+            </div>
+
+            <div class="upi-apps">
+                <button class="upi-app-chip" onclick="simulateUPIApp('PhonePe')">📱 PhonePe</button>
+                <button class="upi-app-chip" onclick="simulateUPIApp('GPay')">💚 GPay</button>
+                <button class="upi-app-chip" onclick="simulateUPIApp('Paytm')">💙 Paytm</button>
+            </div>
+
+            <div class="upi-id-row">
+                <span class="upi-id-text">campusreads@okaxis</span>
+                <button class="btn-copy" onclick="copyUPIId()">Copy ID</button>
+            </div>
+
+            <div id="upiLoader" class="modal-loader" style="display:none;">
+                <div class="loader-spinner"></div>
+                <p id="upiLoaderText">Waiting for payment...</p>
+            </div>
+
+            <button class="btn-submit" onclick="confirmUPIPayment()" style="margin-top:16px;">I've Completed the Payment</button>
+        </div>
+
+        <!-- Card Screen -->
+        <div id="cardScreen" class="payment-screen" style="display:none;">
+            <h2 class="modal-title">Card Payment</h2>
+            <p class="modal-subtitle">Enter your card details below</p>
+            <div class="modal-amount">₹<span id="cardAmount">0</span></div>
+
+            <div class="card-preview">
+                <div class="card-face">
+                    <div class="card-chip">💳</div>
+                    <div class="card-number-display" id="cardNumDisplay">•••• •••• •••• ••••</div>
+                    <div class="card-bottom-row">
+                        <div>
+                            <div class="card-label">CARD HOLDER</div>
+                            <div class="card-value" id="cardNameDisplay">YOUR NAME</div>
+                        </div>
+                        <div>
+                            <div class="card-label">EXPIRES</div>
+                            <div class="card-value" id="cardExpDisplay">MM/YY</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-fields">
+                <div class="form-group">
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" class="card-input" maxlength="19"
+                        placeholder="1234 5678 9012 3456" oninput="formatCardNumber(this)">
+                </div>
+                <div class="form-group">
+                    <label>Cardholder Name</label>
+                    <input type="text" id="cardName" class="card-input"
+                        placeholder="Name as on card" oninput="updateCardPreview()">
+                </div>
+                <div class="card-fields-row">
+                    <div class="form-group">
+                        <label>Expiry</label>
+                        <input type="text" id="cardExpiry" class="card-input" maxlength="5"
+                            placeholder="MM/YY" oninput="formatExpiry(this)">
+                    </div>
+                    <div class="form-group">
+                        <label>CVV</label>
+                        <input type="password" id="cardCVV" class="card-input" maxlength="3" placeholder="•••">
+                    </div>
+                </div>
+                <p class="secure-note">🔒 256-bit SSL encrypted · Mock demo only</p>
+                <div id="cardLoader" class="modal-loader" style="display:none;">
+                    <div class="loader-spinner"></div>
+                    <p id="cardLoaderText">Processing...</p>
+                </div>
+                <button class="btn-submit" id="cardPayBtn" onclick="processCardPayment()" style="margin-top:8px;">
+                    Pay ₹<span id="cardPayAmount">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- COD Screen -->
+        <div id="codScreen" class="payment-screen" style="display:none;">
+            <div class="cod-icon">💵</div>
+            <h2 class="modal-title">Cash on Delivery</h2>
+            <p class="modal-subtitle">Pay when your order arrives at your door</p>
+            <div class="modal-amount">₹<span id="codAmount">0</span></div>
+            <div class="cod-info">
+                <p>📦 Delivered in <strong>5–7 working days</strong></p>
+                <p>💵 Keep exact change ready at delivery</p>
+                <p>📱 SMS confirmation will be sent shortly</p>
+            </div>
+            <button class="btn-submit" onclick="confirmCODPayment()" style="margin-top:20px;">Confirm Order</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SUCCESS MODAL ===================== -->
+<div id="successModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box modal-box-center">
+        <div class="success-tick">✓</div>
+        <h2 class="modal-title">Order Confirmed!</h2>
+        <p class="modal-subtitle">Thank you for shopping at CampusReads.</p>
+        <div class="order-id-badge">
+            Order ID: <strong id="confirmOrderId"></strong>
+        </div>
+        <p class="success-detail" id="successDetail"></p>
+        <button class="btn-submit" onclick="downloadReceipt()" style="margin-bottom:10px;">⬇ Download Receipt (PDF)</button>
+        <button class="btn-clear-cart" onclick="closeSuccessModal()">Continue Shopping</button>
+    </div>
+</div>
+
+<!-- ===================== ORDER HISTORY MODAL ===================== -->
+<div id="historyModal" class="modal-overlay" style="display:none;">
+    <div class="modal-box modal-box-wide">
+        <button class="modal-close" onclick="closeOrderHistory()">×</button>
+        <h2 class="modal-title" style="margin-bottom:24px;">My Orders</h2>
+        <div id="orderHistoryList" class="order-history-list"></div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toastEl" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="db.js"></script>
+<script src="auth.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
