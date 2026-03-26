@@ -32,17 +32,20 @@
                     
                     <div class="form-group">
                         <label for="loginPassword">Password</label>
-                        <input type="password" id="loginPassword" placeholder="••••••••" required>
+                        <div class="pw-wrap">
+                            <input type="password" id="loginPassword" placeholder="••••••••" required>
+                            <button type="button" class="pw-toggle" onclick="togglePw('loginPassword', this)">👁</button>
+                        </div>
                     </div>
                     
                     <div class="form-options">
                         <label class="checkbox">
-                            <input type="checkbox"> Remember me
+                            <input type="checkbox" id="rememberMe"> Remember me
                         </label>
                         <a href="#" class="forgot-password">Forgot password?</a>
                     </div>
                     
-                    <button type="submit" class="auth-btn">Sign In</button>
+                    <button type="submit" class="auth-btn" id="loginBtn">Sign In</button>
                 </form>
                 
                 <div id="loginMessage" class="auth-message"></div>
@@ -77,12 +80,18 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="regPassword">Password</label>
-                            <input type="password" id="regPassword" placeholder="Min. 6 characters" minlength="6" required>
+                            <div class="pw-wrap">
+                                <input type="password" id="regPassword" placeholder="Min. 6 characters" minlength="6" required>
+                                <button type="button" class="pw-toggle" onclick="togglePw('regPassword', this)">👁</button>
+                            </div>
                         </div>
                         
                         <div class="form-group">
                             <label for="regConfirmPassword">Confirm Password</label>
-                            <input type="password" id="regConfirmPassword" placeholder="Re-enter password" minlength="6" required>
+                            <div class="pw-wrap">
+                                <input type="password" id="regConfirmPassword" placeholder="Re-enter password" minlength="6" required>
+                                <button type="button" class="pw-toggle" onclick="togglePw('regConfirmPassword', this)">👁</button>
+                            </div>
                         </div>
                     </div>
                     
@@ -94,7 +103,7 @@
                         </label>
                     </div>
                     
-                    <button type="submit" class="auth-btn">Create Account</button>
+                    <button type="submit" class="auth-btn" id="registerBtn">Create Account</button>
                 </form>
                 
                 <div id="registerMessage" class="auth-message"></div>
@@ -111,7 +120,7 @@
         </div>
     </div>
 
+    <script src="db.js"></script>
     <script src="auth.js"></script>
 </body>
 </html>
-
