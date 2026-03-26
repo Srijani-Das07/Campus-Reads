@@ -1433,3 +1433,555 @@ tbody tr:last-child td {
     }
 }
 
+
+/* ==================== PASSWORD TOGGLE (index.html) ==================== */
+.pw-wrap {
+    position: relative;
+}
+
+.pw-wrap input {
+    padding-right: 46px;
+}
+
+.pw-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+    padding: 0;
+}
+
+.pw-toggle:hover {
+    opacity: 1;
+}
+
+/* ==================== MY ORDERS BUTTON (user banner) ==================== */
+.banner-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-my-orders {
+    background: rgba(255,255,255,0.2);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+}
+
+.btn-my-orders:hover {
+    background: rgba(255,255,255,0.3);
+    border-color: rgba(255,255,255,0.5);
+}
+
+/* ==================== MODAL OVERLAY ==================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(44, 31, 46, 0.6);
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: modalFadeIn 0.2s ease;
+}
+
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.modal-box {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 40px;
+    width: 100%;
+    max-width: 480px;
+    position: relative;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    animation: slideUp 0.3s ease;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Wider variant for order history */
+.modal-box-wide {
+    max-width: 580px;
+}
+
+/* Centred text variant for success */
+.modal-box-center {
+    text-align: center;
+    max-width: 420px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: var(--bg);
+    border: none;
+    font-size: 1.5em;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--dark);
+    transition: background 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    background: #c8c8c8;
+}
+
+/* ==================== PAYMENT SCREEN SHARED ==================== */
+.payment-screen {
+    text-align: center;
+}
+
+.modal-title {
+    font-size: 1.8em;
+    color: var(--dark);
+    margin-bottom: 6px;
+    font-weight: 700;
+}
+
+.modal-subtitle {
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-size: 0.95em;
+}
+
+/* Amount badge — same pill style as .cart-icon */
+.modal-amount {
+    background: var(--primary);
+    color: var(--white);
+    font-size: 1.8em;
+    font-weight: 700;
+    padding: 10px 28px;
+    border-radius: 25px;
+    display: inline-block;
+    margin-bottom: 22px;
+}
+
+/* Loader — spinner inside modal */
+.modal-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    margin-bottom: 6px;
+}
+
+.loader-spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid var(--bg);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.modal-loader p {
+    font-size: 0.9em;
+    color: var(--muted);
+}
+
+/* ==================== UPI SCREEN ==================== */
+.qr-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.qr-svg {
+    border: 3px solid var(--dark);
+    border-radius: 8px;
+}
+
+.qr-label {
+    margin-top: 8px;
+    font-weight: 700;
+    color: var(--dark);
+    font-size: 0.9em;
+}
+
+/* App chips — same pill style as .category on book cards */
+.upi-apps {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.upi-app-chip {
+    background: var(--bg);
+    color: var(--primary);
+    border: 2px solid var(--primary);
+    padding: 6px 16px;
+    border-radius: 15px;
+    font-size: 0.88em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.upi-app-chip:hover {
+    background: var(--primary);
+    color: var(--white);
+}
+
+/* UPI ID row */
+.upi-id-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--bg);
+    padding: 10px 16px;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.upi-id-text {
+    font-weight: 600;
+    font-family: monospace;
+    color: var(--dark);
+}
+
+.btn-copy {
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.82em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-copy:hover {
+    background: var(--primary-dark);
+}
+
+/* ==================== CARD SCREEN ==================== */
+/* Card preview — uses primary/primary-dark gradient matching btn-submit hover */
+.card-preview {
+    width: 100%;
+    max-width: 300px;
+    height: 166px;
+    margin: 0 auto 18px;
+}
+
+.card-face {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+    border-radius: 14px;
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--white);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.card-face::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+}
+
+.card-chip {
+    font-size: 1.5em;
+}
+
+.card-number-display {
+    font-size: 1em;
+    letter-spacing: 0.18em;
+    font-family: monospace;
+}
+
+.card-bottom-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-label {
+    font-size: 0.6em;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 2px;
+}
+
+.card-value {
+    font-size: 0.85em;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+/* Card fields — same style as .order-form input */
+.card-fields {
+    text-align: left;
+}
+
+.card-fields .form-group {
+    margin-bottom: 14px;
+}
+
+.card-fields label {
+    display: block;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--dark);
+    margin-bottom: 6px;
+}
+
+.card-input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 0.95em;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.card-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.card-fields-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.secure-note {
+    font-size: 0.8em;
+    color: var(--muted);
+    text-align: center;
+    background: var(--bg);
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* ==================== COD SCREEN ==================== */
+.cod-icon {
+    font-size: 3.5em;
+    margin-bottom: 8px;
+}
+
+/* Info box — same style as .radio-group */
+.cod-info {
+    background: #f8f9ff;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: left;
+    margin: 14px 0 0;
+}
+
+.cod-info p {
+    font-size: 0.9em;
+    color: var(--muted);
+    margin-bottom: 10px;
+}
+
+.cod-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* ==================== SUCCESS MODAL ==================== */
+/* Tick circle — same primary colour as .btn-checkout */
+.success-tick {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: var(--white);
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+}
+
+/* Order ID badge — same pill as .category on book cards */
+.order-id-badge {
+    background: var(--bg);
+    display: inline-block;
+    padding: 8px 18px;
+    border-radius: 15px;
+    font-size: 0.9em;
+    color: var(--muted);
+    margin: 10px 0 12px;
+}
+
+.order-id-badge strong {
+    color: var(--primary);
+    font-family: monospace;
+}
+
+.success-detail {
+    font-size: 0.9em;
+    color: var(--muted);
+    margin-bottom: 22px;
+}
+
+/* ==================== ORDER HISTORY MODAL ==================== */
+.order-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 55vh;
+    overflow-y: auto;
+}
+
+/* History card — same style as .order-form-wrapper */
+.history-card {
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 16px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+}
+
+.history-card:hover {
+    border-color: var(--primary);
+}
+
+.history-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.history-order-id {
+    font-family: monospace;
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 0.95em;
+}
+
+/* Status pills — same .category pill pattern */
+.history-status {
+    padding: 3px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: 600;
+}
+
+.status-paid {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.history-meta {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+
+.history-meta span {
+    font-size: 0.82em;
+    color: var(--muted);
+}
+
+.history-items {
+    font-size: 0.85em;
+    color: var(--muted);
+    margin-bottom: 6px;
+}
+
+.history-total {
+    font-size: 0.9em;
+    color: var(--dark);
+}
+
+.history-total strong {
+    color: var(--primary);
+}
+
+/* ==================== TOAST ==================== */
+/* Matches .cart-total style — same dark bg + primary accent */
+.toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--dark);
+    color: var(--white);
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    font-weight: 500;
+    z-index: 99999;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==================== RESPONSIVE ADDITIONS ==================== */
+@media (max-width: 768px) {
+    .card-fields-row {
+        grid-template-columns: 1fr;
+    }
+    .modal-box {
+        padding: 28px 20px;
+    }
+    .banner-right {
+        gap: 6px;
+    }
+}
+
